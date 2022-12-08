@@ -1,10 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Hit.wav" type="AudioStream" id=1]
 
 [sub_resource type="ParticlesMaterial" id=1]
-emission_shape = 2
-emission_box_extents = Vector3( 5, 5, 1 )
 flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
@@ -12,24 +10,6 @@ initial_velocity = 50.0
 initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale = 1.5
-scale_random = 1.0
-
-[sub_resource type="Animation" id=2]
-resource_name = "Hit"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/path = NodePath("HitParticles:emitting")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
 
 [node name="HitEffect" type="Node2D"]
 
@@ -38,15 +18,15 @@ stream = ExtResource( 1 )
 autoplay = true
 
 [node name="HitParticles" type="Particles2D" parent="."]
-emitting = false
+scale = Vector2( 1.75, 1.75 )
 amount = 6
-lifetime = 0.3
-one_shot = true
+lifetime = 0.4
 explosiveness = 1.0
 process_material = SubResource( 1 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "Hit"
-anims/Hit = SubResource( 2 )
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+autostart = true
 
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="queue_free"]
+[connection signal="timeout" from="Timer" to="." method="queue_free"]
